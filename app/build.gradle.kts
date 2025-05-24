@@ -17,6 +17,22 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            type = "String",
+            name = "BASE_URL",
+            value = "\"https://api.themoviedb.org/3/\""
+        )
+        buildConfigField(
+            type = "String",
+            name = "BASE_POSTER_URL",
+            value = "\"https://image.tmdb.org/t/p/w500\""
+        )
+        buildConfigField(
+            type = "String",
+            name = "API_TOKEN",
+            value = "\"eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3OGUzZDUxYjYwYzZiN2E3NzU3N2JkNzNmODI3MTEzOCIsInN1YiI6IjVkZmRmOGEwZDFhODkzMDAxNDg2ZjIzZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.8pncezOjkKsif20QbFwy4GO_1dxOt9Rfdt-EFBQ5EDE\""
+        )
     }
 
     buildTypes {
@@ -37,6 +53,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 

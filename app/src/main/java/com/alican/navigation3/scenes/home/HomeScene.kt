@@ -8,9 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun HomeScene() {
+fun HomeScene(
+    viewModel: HomeViewModel = koinViewModel()
+) {
 
     Column(
         modifier = Modifier.fillMaxSize(),
