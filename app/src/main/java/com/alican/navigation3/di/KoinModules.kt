@@ -2,6 +2,7 @@ package com.alican.navigation3.di
 
 import com.alican.navigation3.BuildConfig
 import com.alican.navigation3.scenes.home.HomeViewModel
+import com.alican.navigation3.scenes.movie.list.MovieListViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
@@ -17,6 +18,7 @@ import org.koin.dsl.module
 
 val koinModules = module {
     viewModelOf(::HomeViewModel)
+    viewModelOf(::MovieListViewModel)
 }
 
 val networkModule = module {
