@@ -1,6 +1,8 @@
 package com.alican.navigation3.di
 
 import com.alican.navigation3.BuildConfig
+import com.alican.navigation3.data.service.MovieService
+import com.alican.navigation3.data.service.MovieServiceImpl
 import com.alican.navigation3.scenes.home.HomeViewModel
 import com.alican.navigation3.scenes.movie.list.MovieListViewModel
 import io.ktor.client.HttpClient
@@ -13,12 +15,19 @@ import io.ktor.client.plugins.logging.SIMPLE
 import io.ktor.client.request.header
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val koinModules = module {
+    // viewmodels
     viewModelOf(::HomeViewModel)
     viewModelOf(::MovieListViewModel)
+
+    // services
+
+    singleOf(::MovieServiceImpl) bind MovieService::class
 }
 
 val networkModule = module {
