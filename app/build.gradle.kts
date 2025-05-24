@@ -73,6 +73,13 @@ dependencies {
     // serialization
 
     implementation(libs.kotlinx.serialization.json)
-    
+
+    // navigation
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.navigation3.runtime)
+
+    // material 3
+    implementation(libs.androidx.material3.navigation3)
+
 
 }
