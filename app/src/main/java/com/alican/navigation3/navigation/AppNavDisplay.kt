@@ -10,6 +10,9 @@ import com.alican.navigation3.extension.addRouteSafely
 import com.alican.navigation3.extension.removeRouteSafely
 import com.alican.navigation3.scenes.home.HomeScene
 import com.alican.navigation3.scenes.movie.list.MovieListScreen
+import com.alican.navigation3.scenes.movie.list.MovieListViewModel
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 
 @Composable
@@ -34,11 +37,14 @@ fun AppNavDisplay(
 
             entry<MovieList> { entry ->
                 val movieType = entry.movieType
+                val viewModel: MovieListViewModel = koinViewModel(
+                    parameters = { parametersOf(movieType) }
+                )
                 MovieListScreen(
                     onBack = {
                         backStack.removeRouteSafely()
                     },
-                    movieType = movieType
+                    viewModel = viewModel
                 )
             }
         }
