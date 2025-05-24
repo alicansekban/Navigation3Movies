@@ -8,12 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import androidx.navigation3.runtime.entry
-import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
-import androidx.navigation3.ui.NavDisplay
+import com.alican.navigation3.navigation.AppNavDisplay
 import com.alican.navigation3.navigation.Home
-import com.alican.navigation3.scenes.home.HomeScene
 import com.alican.navigation3.ui.theme.Navigation3TutorialTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,17 +23,9 @@ class MainActivity : ComponentActivity() {
 
             Navigation3TutorialTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
-
-                    NavDisplay(
+                    AppNavDisplay(
                         modifier = Modifier.padding(innerPadding),
-                        backStack = backStack,
-                        onBack = { backStack.removeFirstOrNull() },
-                        entryProvider = entryProvider {
-                            entry<Home> {
-                                HomeScene()
-                            }
-                        }
+                        backStack = backStack
                     )
                 }
             }
