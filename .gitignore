@@ -22,3 +22,5 @@ local.properties
 /.idea/compiler.xml
 /.idea/migrations.xml
 /.idea/inspectionProfiles/Project_Default.xml
+/.idea/misc.xml
+/.idea/
