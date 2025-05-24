@@ -26,9 +26,12 @@ class MainActivity : ComponentActivity() {
 
             Navigation3TutorialTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+
+
                     NavDisplay(
                         modifier = Modifier.padding(innerPadding),
                         backStack = backStack,
+                        onBack = { backStack.removeFirstOrNull() },
                         entryProvider = entryProvider {
                             entry<Home> {
                                 HomeScene()

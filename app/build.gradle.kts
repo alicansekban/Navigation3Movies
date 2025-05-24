@@ -79,7 +79,8 @@ dependencies {
     implementation(libs.androidx.navigation3.runtime)
 
     // material 3
-    implementation(libs.androidx.material3.navigation3)
+    // implementation(libs.androidx.material3.navigation3)
+    //implementation(libs.androidx.adaptive.layout)
 
 
 }
