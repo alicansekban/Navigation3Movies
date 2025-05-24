@@ -1,15 +1,10 @@
 package com.alican.navigation3.navigation
 
-import androidx.navigation3.runtime.NavKey
-import kotlinx.serialization.Serializable
+
+data object Home
 
 
-@Serializable
-data object Home : NavKey
-
-
-@Serializable
-data class MovieList(val movieType: MovieType) : NavKey
+data class MovieList(val movieType: MovieType)
 
 enum class MovieType {
     POPULAR,

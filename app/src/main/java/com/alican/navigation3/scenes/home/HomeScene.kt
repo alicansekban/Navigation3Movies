@@ -16,7 +16,6 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScene(
     viewModel: HomeViewModel = koinViewModel(),
-    onBack: () -> Unit = {},
     onMovieList: (MovieType) -> Unit = {}
 ) {
 

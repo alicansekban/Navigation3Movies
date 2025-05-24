@@ -7,8 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.navigation3.runtime.rememberNavBackStack
 import com.alican.navigation3.navigation.AppNavDisplay
 import com.alican.navigation3.navigation.Home
 import com.alican.navigation3.ui.theme.Navigation3TutorialTheme
@@ -19,7 +20,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
 
-            val backStack = rememberNavBackStack(Home)
+            val backStack = remember { mutableStateListOf<Any>(Home) }
 
             Navigation3TutorialTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
