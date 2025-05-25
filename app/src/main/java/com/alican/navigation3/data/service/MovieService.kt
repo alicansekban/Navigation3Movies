@@ -9,6 +9,9 @@ import io.ktor.http.path
 
 interface MovieService {
     suspend fun getPopularMovies(page: Int): NetworkResult<BaseMoviesResponse>
+    suspend fun getNowPlayingMovies(page: Int): NetworkResult<BaseMoviesResponse>
+    suspend fun getUpComingMovies(page: Int): NetworkResult<BaseMoviesResponse>
+    suspend fun getTopRatedMovies(page: Int): NetworkResult<BaseMoviesResponse>
 }
 
 class MovieServiceImpl(private val client: HttpClient) : MovieService {
@@ -16,6 +19,36 @@ class MovieServiceImpl(private val client: HttpClient) : MovieService {
         return safeApiCall<BaseMoviesResponse>(client = client) {
             url {
                 path("movie/popular")
+                parameters.append("page", page.toString())
+            }
+            method = HttpMethod.Get
+        }
+    }
+
+    override suspend fun getNowPlayingMovies(page: Int): NetworkResult<BaseMoviesResponse> {
+        return safeApiCall<BaseMoviesResponse>(client = client) {
+            url {
+                path("movie/now_playing")
+                parameters.append("page", page.toString())
+            }
+            method = HttpMethod.Get
+        }
+    }
+
+    override suspend fun getUpComingMovies(page: Int): NetworkResult<BaseMoviesResponse> {
+        return safeApiCall<BaseMoviesResponse>(client = client) {
+            url {
+                path("movie/upcoming")
+                parameters.append("page", page.toString())
+            }
+            method = HttpMethod.Get
+        }
+    }
+
+    override suspend fun getTopRatedMovies(page: Int): NetworkResult<BaseMoviesResponse> {
+        return safeApiCall<BaseMoviesResponse>(client = client) {
+            url {
+                path("movie/top_rated")
                 parameters.append("page", page.toString())
             }
             method = HttpMethod.Get

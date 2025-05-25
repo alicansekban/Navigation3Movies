@@ -81,11 +81,24 @@ fun HomeScene(
         }
 
         HomeMovieWidget(
-            title = "Popular Movies",
-            onMovieList = { onMovieList(MovieType.POPULAR) },
+            title = "UpComing Movies",
+            onMovieList = { onMovieList(MovieType.UPCOMING) },
             onMovieDetail = onMovieDetail,
-            movies = uiState.popularMovies
+            movies = uiState.upComingMovies
         )
+        HomeMovieWidget(
+            title = "Now Playing Movies",
+            onMovieList = { onMovieList(MovieType.NOW_PLAYING) },
+            onMovieDetail = onMovieDetail,
+            movies = uiState.nowPlayingMovies
+        )
+        HomeMovieWidget(
+            title = "Top Rated Movies",
+            onMovieList = { onMovieList(MovieType.TOP_RATED) },
+            onMovieDetail = onMovieDetail,
+            movies = uiState.topRatedMovies
+        )
+
     }
 }
 

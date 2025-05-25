@@ -25,6 +25,52 @@ class HomeViewModel(
 
     init {
         getPopularMovies()
+        getNowPlayingMovies()
+        getUpComingMovies()
+        getTopRatedMovies()
+    }
+
+    private fun getUpComingMovies() {
+        viewModelScope.launch {
+            interactor.getUpComingMovies(1).collect { state ->
+                state.onSuccess { data ->
+                    _uiState.update {
+                        it.copy(
+                            upComingMovies = data
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getNowPlayingMovies() {
+        viewModelScope.launch {
+            interactor.getNowPlayingMovies(1).collect { state ->
+                state.onSuccess { data ->
+                    _uiState.update {
+                        it.copy(
+                            nowPlayingMovies = data
+
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getTopRatedMovies() {
+        viewModelScope.launch {
+            interactor.getTopRatedMovies(1).collect { state ->
+                state.onSuccess { data ->
+                    _uiState.update {
+                        it.copy(
+                            topRatedMovies = data
+                        )
+                    }
+                }
+            }
+        }
     }
 
     private fun getPopularMovies() {

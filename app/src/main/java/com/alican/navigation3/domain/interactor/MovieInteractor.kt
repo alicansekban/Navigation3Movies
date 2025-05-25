@@ -11,6 +11,9 @@ import kotlinx.coroutines.flow.flow
 
 interface MovieInteractor {
     fun getPopularMovies(page: Int): Flow<DomainResult<List<MovieUIModel>>>
+    fun getNowPlayingMovies(page: Int): Flow<DomainResult<List<MovieUIModel>>>
+    fun getUpComingMovies(page: Int): Flow<DomainResult<List<MovieUIModel>>>
+    fun getTopRatedMovies(page: Int): Flow<DomainResult<List<MovieUIModel>>>
 }
 
 class MovieInteractorImpl(
@@ -24,7 +27,71 @@ class MovieInteractorImpl(
                 is NetworkResult.Success -> {
                     val uiModels = result.data.results.map { apiMovie ->
                         apiMovie.toUIModel()
-                    }
+                    }.shuffled()
+                    emit(DomainResult.Success(uiModels))
+                }
+
+                is NetworkResult.Error -> {
+                    emit(DomainResult.Error(result.error.errorMessage))
+                }
+            }
+        }.catch { e ->
+            emit(DomainResult.Error("Unexpected error occurred: ${e.localizedMessage}"))
+        }
+    }
+
+    override fun getNowPlayingMovies(page: Int): Flow<DomainResult<List<MovieUIModel>>> {
+        return flow {
+            emit(DomainResult.Loading)
+            when (val result =
+                service.getNowPlayingMovies(page)) {
+                is NetworkResult.Success -> {
+                    val uiModels = result.data.results.map { apiMovie ->
+                        apiMovie.toUIModel()
+                    }.shuffled()
+                    emit(DomainResult.Success(uiModels))
+                }
+
+                is NetworkResult.Error -> {
+                    emit(DomainResult.Error(result.error.errorMessage))
+                }
+            }
+        }.catch { e ->
+            emit(DomainResult.Error("Unexpected error occurred: ${e.localizedMessage}"))
+        }
+    }
+
+    override fun getUpComingMovies(page: Int): Flow<DomainResult<List<MovieUIModel>>> {
+        return flow {
+            emit(DomainResult.Loading)
+            when (val result =
+                service.getUpComingMovies(page)) {
+                is NetworkResult.Success -> {
+                    val uiModels = result.data.results.map { apiMovie ->
+                        apiMovie.toUIModel()
+                    }.shuffled()
+                    emit(DomainResult.Success(uiModels))
+                }
+
+                is NetworkResult.Error -> {
+                    emit(DomainResult.Error(result.error.errorMessage))
+                }
+            }
+        }.catch { e ->
+            emit(DomainResult.Error("Unexpected error occurred: ${e.localizedMessage}"))
+        }
+    }
+
+
+    override fun getTopRatedMovies(page: Int): Flow<DomainResult<List<MovieUIModel>>> {
+        return flow {
+            emit(DomainResult.Loading)
+            when (val result =
+                service.getTopRatedMovies(page)) {
+                is NetworkResult.Success -> {
+                    val uiModels = result.data.results.map { apiMovie ->
+                        apiMovie.toUIModel()
+                    }.shuffled()
                     emit(DomainResult.Success(uiModels))
                 }
 
