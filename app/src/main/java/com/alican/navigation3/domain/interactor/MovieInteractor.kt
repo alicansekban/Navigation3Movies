@@ -14,6 +14,7 @@ interface MovieInteractor {
     fun getNowPlayingMovies(page: Int): Flow<DomainResult<List<MovieUIModel>>>
     fun getUpComingMovies(page: Int): Flow<DomainResult<List<MovieUIModel>>>
     fun getTopRatedMovies(page: Int): Flow<DomainResult<List<MovieUIModel>>>
+    fun getMovieDetail(movieId: Int): Flow<DomainResult<MovieUIModel>>
 }
 
 class MovieInteractorImpl(
@@ -101,6 +102,23 @@ class MovieInteractorImpl(
             }
         }.catch { e ->
             emit(DomainResult.Error("Unexpected error occurred: ${e.localizedMessage}"))
+        }
+    }
+
+    override fun getMovieDetail(movieId: Int): Flow<DomainResult<MovieUIModel>> {
+        return flow {
+            emit(DomainResult.Loading)
+            when (val result =
+                service.getMovieDetail(movieId)) {
+                is NetworkResult.Success -> {
+                    val uiModel = result.data.toUIModel()
+                    emit(DomainResult.Success(uiModel))
+                }
+
+                is NetworkResult.Error -> {
+                    emit(DomainResult.Error(result.error.errorMessage))
+                }
+            }
         }
     }
 }

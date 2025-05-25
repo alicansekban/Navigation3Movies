@@ -1,6 +1,7 @@
 package com.alican.navigation3.data.service
 
 import com.alican.navigation3.data.response.BaseMoviesResponse
+import com.alican.navigation3.data.response.MovieDetailResponse
 import com.alican.navigation3.utils.NetworkResult
 import com.alican.navigation3.utils.safeApiCall
 import io.ktor.client.HttpClient
@@ -12,6 +13,7 @@ interface MovieService {
     suspend fun getNowPlayingMovies(page: Int): NetworkResult<BaseMoviesResponse>
     suspend fun getUpComingMovies(page: Int): NetworkResult<BaseMoviesResponse>
     suspend fun getTopRatedMovies(page: Int): NetworkResult<BaseMoviesResponse>
+    suspend fun getMovieDetail(movieId: Int): NetworkResult<MovieDetailResponse>
 }
 
 class MovieServiceImpl(private val client: HttpClient) : MovieService {
@@ -50,6 +52,15 @@ class MovieServiceImpl(private val client: HttpClient) : MovieService {
             url {
                 path("movie/top_rated")
                 parameters.append("page", page.toString())
+            }
+            method = HttpMethod.Get
+        }
+    }
+
+    override suspend fun getMovieDetail(movieId: Int): NetworkResult<MovieDetailResponse> {
+        return safeApiCall<MovieDetailResponse>(client = client) {
+            url {
+                path("movie/$movieId")
             }
             method = HttpMethod.Get
         }

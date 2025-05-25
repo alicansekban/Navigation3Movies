@@ -16,4 +16,4 @@ enum class MovieType {
 }
 
 
-data class MovieDetail(val movieId: String)
+data class MovieDetail(val id: Int)

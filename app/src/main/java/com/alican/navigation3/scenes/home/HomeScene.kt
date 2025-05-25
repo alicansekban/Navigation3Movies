@@ -39,7 +39,7 @@ import org.koin.androidx.compose.koinViewModel
 fun HomeScene(
     viewModel: HomeViewModel = koinViewModel(),
     onMovieList: (MovieType) -> Unit = {},
-    onMovieDetail: (String) -> Unit = {}
+    onMovieDetail: (Int) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
@@ -72,7 +72,7 @@ fun HomeScene(
                         .fillMaxWidth()
                         .aspectRatio(0.9f)
                         .clickable {
-                            onMovieDetail(posterMovie.id.toString())
+                            onMovieDetail(posterMovie.id)
                         },
                     contentScale = ContentScale.FillBounds
                 )
@@ -106,7 +106,7 @@ fun HomeScene(
 private fun HomeMovieWidget(
     title: String,
     onMovieList: () -> Unit = {},
-    onMovieDetail: (String) -> Unit = {},
+    onMovieDetail: (Int) -> Unit = {},
     movies: List<MovieUIModel>
 ) {
     Column(
@@ -151,10 +151,10 @@ private fun HomeMovieWidget(
 }
 
 @Composable
-private fun MovieItem(movie: MovieUIModel, onMovieDetail: (String) -> Unit) {
+private fun MovieItem(movie: MovieUIModel, onMovieDetail: (Int) -> Unit) {
     Column(
         modifier = Modifier.clickable {
-            onMovieDetail(movie.id.toString())
+            onMovieDetail(movie.id)
         },
         verticalArrangement = Arrangement.spacedBy(6.dp),
         horizontalAlignment = Alignment.CenterHorizontally
