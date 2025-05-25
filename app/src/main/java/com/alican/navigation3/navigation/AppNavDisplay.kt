@@ -56,9 +56,9 @@ fun AppNavDisplay(
             }
 
             entry<MovieDetail> { entry ->
-                val movieId = entry.id
+                val movieId = entry.movie
                 val viewModel: MovieDetailViewModel = koinViewModel(
-                    key = entry.id.toString(),
+                    key = entry.movie.id.toString(),
                     parameters = { parametersOf(movieId) }
                 )
                 MovieDetailScene(

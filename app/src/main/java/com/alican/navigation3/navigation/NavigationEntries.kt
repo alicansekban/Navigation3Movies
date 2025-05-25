@@ -1,5 +1,7 @@
 package com.alican.navigation3.navigation
 
+import com.alican.navigation3.domain.ui_model.MovieUIModel
+
 
 data object Home
 
@@ -16,4 +18,4 @@ enum class MovieType {
 }
 
 
-data class MovieDetail(val id: Int)
+data class MovieDetail(val movie: MovieUIModel)
