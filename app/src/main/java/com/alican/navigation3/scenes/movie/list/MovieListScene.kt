@@ -1,34 +1,50 @@
 package com.alican.navigation3.scenes.movie.list
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.alican.navigation3.content.MovieItemContent
+import com.alican.navigation3.domain.ui_model.MovieUIModel
 
 @Composable
 fun MovieListScreen(
     viewModel: MovieListViewModel,
-    onBack: () -> Unit = {}
+    onBack: () -> Unit = {},
+    onMovieDetail: (MovieUIModel) -> Unit = {}
 ) {
 
-    val context = LocalContext.current
-
-    Column(
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val listState = rememberLazyGridState()
+    if (uiState.isLoading) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+    }
+    LazyVerticalGrid(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        state = listState,
+        columns = GridCells.Fixed(2),
+        contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-
-        Text(
-            text = "",
-            modifier = Modifier.clickable {
-                onBack.invoke()
-            }
-        )
+        items(
+            items = uiState.movies,
+            key = { it.id }
+        ) { movie ->
+            MovieItemContent(movie = movie, onMovieDetail = onMovieDetail)
+        }
     }
 }

@@ -28,7 +28,7 @@ class MovieInteractorImpl(
                 is NetworkResult.Success -> {
                     val uiModels = result.data.results.map { apiMovie ->
                         apiMovie.toUIModel()
-                    }.shuffled()
+                    }
                     emit(DomainResult.Success(uiModels))
                 }
 
@@ -49,7 +49,7 @@ class MovieInteractorImpl(
                 is NetworkResult.Success -> {
                     val uiModels = result.data.results.map { apiMovie ->
                         apiMovie.toUIModel()
-                    }.shuffled()
+                    }
                     emit(DomainResult.Success(uiModels))
                 }
 
@@ -70,7 +70,7 @@ class MovieInteractorImpl(
                 is NetworkResult.Success -> {
                     val uiModels = result.data.results.map { apiMovie ->
                         apiMovie.toUIModel()
-                    }.shuffled()
+                    }
                     emit(DomainResult.Success(uiModels))
                 }
 
@@ -92,7 +92,7 @@ class MovieInteractorImpl(
                 is NetworkResult.Success -> {
                     val uiModels = result.data.results.map { apiMovie ->
                         apiMovie.toUIModel()
-                    }.shuffled()
+                    }
                     emit(DomainResult.Success(uiModels))
                 }
 

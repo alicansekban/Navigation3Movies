@@ -47,11 +47,16 @@ fun AppNavDisplay(
                     key = entry.movieType.name,
                     parameters = { parametersOf(movieType) }
                 )
+
                 MovieListScreen(
                     onBack = {
                         backStack.removeRouteSafely()
                     },
-                    viewModel = viewModel
+                    viewModel = viewModel,
+                    onMovieDetail = { movie ->
+                        val route = MovieDetail(movie = movie)
+                        backStack.addRouteSafely(route)
+                    }
                 )
             }
 

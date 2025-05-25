@@ -36,7 +36,7 @@ class HomeViewModel(
                 state.onSuccess { data ->
                     _uiState.update {
                         it.copy(
-                            upComingMovies = data
+                            upComingMovies = data.shuffled()
                         )
                     }
                 }
@@ -50,7 +50,7 @@ class HomeViewModel(
                 state.onSuccess { data ->
                     _uiState.update {
                         it.copy(
-                            nowPlayingMovies = data
+                            nowPlayingMovies = data.shuffled()
 
                         )
                     }
@@ -65,7 +65,7 @@ class HomeViewModel(
                 state.onSuccess { data ->
                     _uiState.update {
                         it.copy(
-                            topRatedMovies = data
+                            topRatedMovies = data.shuffled()
                         )
                     }
                 }
@@ -87,7 +87,7 @@ class HomeViewModel(
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            popularMovies = data
+                            popularMovies = data.shuffled()
                         )
                     }
                     if (data.isNotEmpty()) {

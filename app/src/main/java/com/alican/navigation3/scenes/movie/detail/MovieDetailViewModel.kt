@@ -28,7 +28,7 @@ class MovieDetailViewModel(
             )
         }
     }.stateIn(
-        viewModelScope, SharingStarted.Eagerly, _uiState.value
+        viewModelScope, SharingStarted.WhileSubscribed(), _uiState.value
     )
 
     private fun getMovieDetail() {
