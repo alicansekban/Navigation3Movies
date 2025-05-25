@@ -1,5 +1,8 @@
 package com.alican.navigation3.domain.ui_model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class MovieUIModel(
     val id: Int = 0,
     val name: String = "",

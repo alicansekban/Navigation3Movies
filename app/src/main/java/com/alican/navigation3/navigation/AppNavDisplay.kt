@@ -1,13 +1,15 @@
 package com.alican.navigation3.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.entry
 import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import com.alican.navigation3.extension.addRouteSafely
-import com.alican.navigation3.extension.removeRouteSafely
 import com.alican.navigation3.scenes.home.HomeScene
 import com.alican.navigation3.scenes.movie.detail.MovieDetailScene
 import com.alican.navigation3.scenes.movie.detail.MovieDetailViewModel
@@ -20,28 +22,33 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun AppNavDisplay(
     modifier: Modifier = Modifier,
-    backStack: SnapshotStateList<Any>
+    backStack: NavBackStack
 ) {
 
     NavDisplay(
         modifier = modifier,
         backStack = backStack,
-        onBack = { keysToRemove -> repeat(keysToRemove) { backStack.removeRouteSafely() } },
+        entryDecorators = listOf(
+            rememberSceneSetupNavEntryDecorator(),
+            rememberSavedStateNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator()
+        ),
+        onBack = { backStack.removeLastOrNull() },
         entryProvider = entryProvider {
-            entry<Home> {
+            entry<Scenes.Home> {
                 HomeScene(
                     onMovieList = { movieType ->
-                        val route = MovieList(movieType)
+                        val route = Scenes.MovieList(movieType)
                         backStack.addRouteSafely(route)
                     },
                     onMovieDetail = { movieId ->
-                        val route = MovieDetail(movieId)
+                        val route = Scenes.MovieDetail(movieId)
                         backStack.addRouteSafely(route)
                     }
                 )
             }
 
-            entry<MovieList> { entry ->
+            entry<Scenes.MovieList> { entry ->
                 val movieType = entry.movieType
                 val viewModel: MovieListViewModel = koinViewModel(
                     key = entry.movieType.name,
@@ -50,17 +57,17 @@ fun AppNavDisplay(
 
                 MovieListScreen(
                     onBack = {
-                        backStack.removeRouteSafely()
+                        backStack.removeLastOrNull()
                     },
                     viewModel = viewModel,
                     onMovieDetail = { movie ->
-                        val route = MovieDetail(movie = movie)
+                        val route = Scenes.MovieDetail(movie = movie)
                         backStack.addRouteSafely(route)
                     }
                 )
             }
 
-            entry<MovieDetail> { entry ->
+            entry<Scenes.MovieDetail> { entry ->
                 val movieId = entry.movie
                 val viewModel: MovieDetailViewModel = koinViewModel(
                     key = entry.movie.id.toString(),
@@ -69,7 +76,7 @@ fun AppNavDisplay(
                 MovieDetailScene(
                     viewModel = viewModel,
                     onBack = {
-                        backStack.removeRouteSafely()
+                        backStack.removeLastOrNull()
                     }
                 )
             }

@@ -3,6 +3,7 @@ package com.alican.navigation3.scenes.movie.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alican.navigation3.domain.interactor.MovieInteractor
+import com.alican.navigation3.domain.ui_model.MovieUIModel
 import com.alican.navigation3.navigation.MovieType
 import com.alican.navigation3.utils.onError
 import com.alican.navigation3.utils.onLoading
@@ -23,7 +24,7 @@ class MovieListViewModel(
     private val _uiState = MutableStateFlow(MovieListUIStateModel())
     val uiState: StateFlow<MovieListUIStateModel> = _uiState.onStart {
         getMovies(_uiState.value.currentPage)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), _uiState.value)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), _uiState.value)
 
     fun onSceneEvents(event: MovieListUIEvents) {
         when (event) {
@@ -36,7 +37,6 @@ class MovieListViewModel(
     private fun getMovies(page: Int) {
         when (movieType) {
             MovieType.POPULAR -> getPopularMovies(page = page)
-
             MovieType.TOP_RATED -> getTopRatedMovies(page = page)
             MovieType.UPCOMING -> getUpComingMovies(page = page)
             MovieType.NOW_PLAYING -> getNowPlayingMovies(page = page)
@@ -47,12 +47,7 @@ class MovieListViewModel(
         viewModelScope.launch {
             interactor.getPopularMovies(page).collect { state ->
                 state.onSuccess { data ->
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            movies = data
-                        )
-                    }
+                    handlePagination(newMovies = data, newPage = page)
                 }
                 state.onError { message, originalError ->
                     _uiState.update {
@@ -76,12 +71,7 @@ class MovieListViewModel(
         viewModelScope.launch {
             interactor.getTopRatedMovies(page).collect { state ->
                 state.onSuccess { data ->
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            movies = data
-                        )
-                    }
+                    handlePagination(newMovies = data, newPage = page)
                 }
                 state.onError { message, originalError ->
                     _uiState.update {
@@ -105,12 +95,7 @@ class MovieListViewModel(
         viewModelScope.launch {
             interactor.getUpComingMovies(page).collect { state ->
                 state.onSuccess { data ->
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            movies = data
-                        )
-                    }
+                    handlePagination(newMovies = data, newPage = page)
                 }
                 state.onError { message, originalError ->
                     _uiState.update {
@@ -134,12 +119,7 @@ class MovieListViewModel(
         viewModelScope.launch {
             interactor.getNowPlayingMovies(page).collect { state ->
                 state.onSuccess { data ->
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            movies = data
-                        )
-                    }
+                    handlePagination(newMovies = data, newPage = page)
                 }
                 state.onError { message, originalError ->
                     _uiState.update {
@@ -156,6 +136,17 @@ class MovieListViewModel(
                     }
                 }
             }
+        }
+    }
+
+    private fun handlePagination(newMovies: List<MovieUIModel>, newPage: Int) {
+        _uiState.update {
+            it.copy(
+                movies = it.movies.plus(newMovies),
+                currentPage = newPage,
+                hasNextPage = newMovies.size >= 20,
+                isLoading = false
+            )
         }
     }
 }
