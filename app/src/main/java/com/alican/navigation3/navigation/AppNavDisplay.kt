@@ -9,6 +9,8 @@ import androidx.navigation3.ui.NavDisplay
 import com.alican.navigation3.extension.addRouteSafely
 import com.alican.navigation3.extension.removeRouteSafely
 import com.alican.navigation3.scenes.home.HomeScene
+import com.alican.navigation3.scenes.movie.detail.MovieDetailScene
+import com.alican.navigation3.scenes.movie.detail.MovieDetailViewModel
 import com.alican.navigation3.scenes.movie.list.MovieListScreen
 import com.alican.navigation3.scenes.movie.list.MovieListViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -31,6 +33,10 @@ fun AppNavDisplay(
                     onMovieList = { movieType ->
                         val route = MovieList(movieType)
                         backStack.addRouteSafely(route)
+                    },
+                    onMovieDetail = { movieId ->
+                        val route = MovieDetail(movieId)
+                        backStack.addRouteSafely(route)
                     }
                 )
             }
@@ -45,6 +51,19 @@ fun AppNavDisplay(
                         backStack.removeRouteSafely()
                     },
                     viewModel = viewModel
+                )
+            }
+
+            entry<MovieDetail> { entry ->
+                val movieId = entry.movieId
+                val viewModel: MovieDetailViewModel = koinViewModel(
+                    parameters = { parametersOf(movieId) }
+                )
+                MovieDetailScene(
+                    viewModel = viewModel,
+                    onBack = {
+                        backStack.removeRouteSafely()
+                    }
                 )
             }
         }

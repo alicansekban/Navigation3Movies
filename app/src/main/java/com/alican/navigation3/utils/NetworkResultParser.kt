@@ -13,13 +13,6 @@ data class ErrorModel(
     val errorType: ErrorType = ErrorType.SYSTEM,
     val statusCode: StatusCode = StatusCode.INTERNAL_SERVER_ERROR,
 )
-
-data class ErrorDetailsModel(
-    val fieldName: String? = null,
-    val operatorCode: String? = null,
-    val message: String? = null
-)
-
 enum class ErrorType {
     BUSINESS, VALIDATION, SYSTEM, NETWORK
 }

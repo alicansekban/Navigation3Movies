@@ -3,6 +3,7 @@ package com.alican.navigation3.scenes.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alican.navigation3.domain.interactor.MovieInteractor
+import com.alican.navigation3.domain.ui_model.MovieUIModel
 import com.alican.navigation3.utils.onError
 import com.alican.navigation3.utils.onLoading
 import com.alican.navigation3.utils.onSuccess
@@ -44,9 +45,12 @@ class HomeViewModel(
                         )
                     }
                     if (data.isNotEmpty()) {
-                        changePosterImage(
-                            data.map { it.imageUrl }
-                        )
+                        _uiState.update {
+                            it.copy(
+                                posterMovie = data.first()
+                            )
+                        }
+                        changePosterImage(availablePosters = data)
                     }
                 }
                 state.onError { message, originalError ->
@@ -60,7 +64,7 @@ class HomeViewModel(
         }
     }
 
-    private fun changePosterImage(availablePosters: List<String>) {
+    private fun changePosterImage(availablePosters: List<MovieUIModel>) {
         viewModelScope.launch(Dispatchers.Default) {
             while (isActive) {
                 delay(3000L)
@@ -69,7 +73,7 @@ class HomeViewModel(
                 currentPosterIndex = (currentPosterIndex + 1) % availablePosters.size
 
                 _uiState.update {
-                    it.copy(posterImage = availablePosters[currentPosterIndex])
+                    it.copy(posterMovie = availablePosters[currentPosterIndex])
                 }
             }
         }

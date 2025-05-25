@@ -6,6 +6,7 @@ data object Home
 
 data class MovieList(val movieType: MovieType)
 
+
 enum class MovieType {
     POPULAR,
     TOP_RATED,
@@ -13,3 +14,6 @@ enum class MovieType {
     NOW_PLAYING
 
 }
+
+
+data class MovieDetail(val movieId: String)

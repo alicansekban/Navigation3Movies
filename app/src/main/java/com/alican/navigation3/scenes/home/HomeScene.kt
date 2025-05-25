@@ -2,11 +2,14 @@ package com.alican.navigation3.scenes.home
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,9 +24,11 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScene(
     viewModel: HomeViewModel = koinViewModel(),
-    onMovieList: (MovieType) -> Unit = {}
+    onMovieList: (MovieType) -> Unit = {},
+    onMovieDetail: (String) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val scrollState = rememberScrollState()
 
     if (uiState.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -31,25 +36,30 @@ fun HomeScene(
         }
     }
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
     ) {
         Crossfade(
-            targetState = uiState.posterImage,
+            targetState = uiState.posterMovie,
             modifier = Modifier,
             label = "poster image",
             animationSpec = tween(
                 durationMillis = 500,
                 delayMillis = 0
             )
-        ) { image ->
-            image?.let { posterImage ->
+        ) { movie ->
+            movie?.let { posterMovie ->
                 SubcomposeAsyncImage(
-                    model = posterImage,
+                    model = posterMovie.imageUrl,
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .aspectRatio(0.8f),
-                    contentScale = ContentScale.Fit
+                        .aspectRatio(0.9f)
+                        .clickable {
+                            onMovieDetail(posterMovie.id.toString())
+                        },
+                    contentScale = ContentScale.FillBounds
                 )
             }
 

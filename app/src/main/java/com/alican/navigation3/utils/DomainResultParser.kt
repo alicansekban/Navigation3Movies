@@ -4,7 +4,7 @@ package com.alican.navigation3.utils
 sealed class DomainResult<out T> {
     data class Success<T>(val data: T) : DomainResult<T>()
     data class Error(val message: String, val originalErrorModel: ErrorModel? = null) :
-        DomainResult<Nothing>() // Orijinal hatayı da taşıyabiliriz
+        DomainResult<Nothing>()
 
     data object Loading : DomainResult<Nothing>()
 }
