@@ -1,5 +1,7 @@
 package com.alican.navigation3.scenes.home
 
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -31,18 +33,27 @@ fun HomeScene(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        if (uiState.popularMovies.isNotEmpty()) {
-            SubcomposeAsyncImage(
-                model = uiState.popularMovies[0].imageUrl,
-                contentDescription = null,
-                loading = {
-                    CircularProgressIndicator()
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(0.8f),
-                contentScale = ContentScale.Fit
+        Crossfade(
+            targetState = uiState.posterImage,
+            modifier = Modifier,
+            label = "poster image",
+            animationSpec = tween(
+                durationMillis = 500,
+                delayMillis = 0
             )
+        ) { image ->
+            image?.let { posterImage ->
+                SubcomposeAsyncImage(
+                    model = posterImage,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(0.8f),
+                    contentScale = ContentScale.Fit
+                )
+            }
+
         }
+
     }
 }

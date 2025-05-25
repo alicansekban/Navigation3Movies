@@ -6,9 +6,12 @@ import com.alican.navigation3.domain.interactor.MovieInteractor
 import com.alican.navigation3.utils.onError
 import com.alican.navigation3.utils.onLoading
 import com.alican.navigation3.utils.onSuccess
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
@@ -17,6 +20,7 @@ class HomeViewModel(
 
     private val _uiState = MutableStateFlow(HomeSceneUIStateModel())
     val uiState = _uiState.asStateFlow()
+    private var currentPosterIndex = 0
 
     init {
         getPopularMovies()
@@ -39,6 +43,11 @@ class HomeViewModel(
                             popularMovies = data
                         )
                     }
+                    if (data.isNotEmpty()) {
+                        changePosterImage(
+                            data.map { it.imageUrl }
+                        )
+                    }
                 }
                 state.onError { message, originalError ->
                     _uiState.update {
@@ -50,4 +59,20 @@ class HomeViewModel(
             }
         }
     }
+
+    private fun changePosterImage(availablePosters: List<String>) {
+        viewModelScope.launch(Dispatchers.Default) {
+            while (isActive) {
+                delay(3000L)
+
+                if (availablePosters.isEmpty()) continue
+                currentPosterIndex = (currentPosterIndex + 1) % availablePosters.size
+
+                _uiState.update {
+                    it.copy(posterImage = availablePosters[currentPosterIndex])
+                }
+            }
+        }
+    }
+
 }
