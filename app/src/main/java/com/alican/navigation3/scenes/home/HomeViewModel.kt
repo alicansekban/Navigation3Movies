@@ -36,7 +36,15 @@ class HomeViewModel(
                 state.onSuccess { data ->
                     _uiState.update {
                         it.copy(
-                            upComingMovies = data.shuffled()
+                            upComingMovies = data.shuffled(),
+                            isUpComingLoading = false
+                        )
+                    }
+                }
+                state.onError { message, originalError ->
+                    _uiState.update {
+                        it.copy(
+                            isUpComingLoading = false
                         )
                     }
                 }
@@ -50,10 +58,19 @@ class HomeViewModel(
                 state.onSuccess { data ->
                     _uiState.update {
                         it.copy(
-                            nowPlayingMovies = data.shuffled()
+                            nowPlayingMovies = data.shuffled(),
+                            isNowPlayingLoading = false
+                        )
+                    }
+                }
+                state.onError { message, originalError ->
+                    _uiState.update {
+                        it.copy(
+                            isNowPlayingLoading = false
 
                         )
                     }
+
                 }
             }
         }
@@ -65,7 +82,15 @@ class HomeViewModel(
                 state.onSuccess { data ->
                     _uiState.update {
                         it.copy(
-                            topRatedMovies = data.shuffled()
+                            topRatedMovies = data.shuffled(),
+                            isTopRatedLoading = false
+                        )
+                    }
+                }
+                state.onError { message, originalError ->
+                    _uiState.update {
+                        it.copy(
+                            isTopRatedLoading = false
                         )
                     }
                 }
@@ -79,14 +104,14 @@ class HomeViewModel(
                 state.onLoading {
                     _uiState.update {
                         it.copy(
-                            isLoading = true,
+                            isOverallLoading = true,
                         )
                     }
                 }
                 state.onSuccess { data ->
                     _uiState.update {
                         it.copy(
-                            isLoading = false,
+                            isOverallLoading = false,
                             popularMovies = data.shuffled()
                         )
                     }
@@ -102,7 +127,7 @@ class HomeViewModel(
                 state.onError { message, originalError ->
                     _uiState.update {
                         it.copy(
-                            isLoading = false,
+                            isOverallLoading = false,
                         )
                     }
                 }

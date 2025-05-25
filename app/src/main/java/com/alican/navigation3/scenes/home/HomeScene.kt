@@ -4,7 +4,6 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -16,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +26,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import com.alican.navigation3.content.MovieItemContent
+import com.alican.navigation3.content.ShimmerHomeMovieWidgetPlaceholder
+import com.alican.navigation3.content.ShimmerMovieItemPlaceholder
+import com.alican.navigation3.content.ShimmerPosterImagePlaceholder
+import com.alican.navigation3.content.rememberShimmerBrush
 import com.alican.navigation3.domain.ui_model.MovieUIModel
 import com.alican.navigation3.navigation.MovieType
 import org.koin.androidx.compose.koinViewModel
@@ -41,11 +43,7 @@ fun HomeScene(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
 
-    if (uiState.isLoading) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator()
-        }
-    }
+    val brush = rememberShimmerBrush()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -73,6 +71,8 @@ fun HomeScene(
                         },
                     contentScale = ContentScale.FillBounds
                 )
+            } ?: run {
+                ShimmerPosterImagePlaceholder(brush = brush)
             }
 
         }
@@ -81,19 +81,23 @@ fun HomeScene(
             title = "UpComing Movies",
             onMovieList = { onMovieList(MovieType.UPCOMING) },
             onMovieDetail = onMovieDetail,
-            movies = uiState.upComingMovies
+            movies = uiState.upComingMovies,
+            showShimmer = uiState.isUpComingLoading
         )
         HomeMovieWidget(
             title = "Now Playing Movies",
             onMovieList = { onMovieList(MovieType.NOW_PLAYING) },
             onMovieDetail = onMovieDetail,
-            movies = uiState.nowPlayingMovies
+            movies = uiState.nowPlayingMovies,
+            showShimmer = uiState.isNowPlayingLoading
         )
         HomeMovieWidget(
             title = "Top Rated Movies",
             onMovieList = { onMovieList(MovieType.TOP_RATED) },
             onMovieDetail = onMovieDetail,
-            movies = uiState.topRatedMovies
+            movies = uiState.topRatedMovies,
+            showShimmer = uiState.isTopRatedLoading
+
         )
 
     }
@@ -102,10 +106,19 @@ fun HomeScene(
 @Composable
 private fun HomeMovieWidget(
     title: String,
+    showShimmer: Boolean,
     onMovieList: () -> Unit = {},
     onMovieDetail: (MovieUIModel) -> Unit = {},
     movies: List<MovieUIModel>
 ) {
+    if (showShimmer) {
+        ShimmerHomeMovieWidgetPlaceholder(
+            itemCount = 5,
+            itemContent = { brush ->
+                ShimmerMovieItemPlaceholder(brush = brush)
+            }
+        )
+    } else {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -144,5 +157,6 @@ private fun HomeMovieWidget(
                 )
             }
         }
+    }
     }
 }
