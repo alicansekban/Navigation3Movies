@@ -1,21 +1,20 @@
 package com.alican.navigation3.scenes.movie.list
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alican.navigation3.content.MovieItemContent
+import com.alican.navigation3.content.ShimmerMovieItemPlaceholder
+import com.alican.navigation3.content.rememberShimmerBrush
 import com.alican.navigation3.domain.ui_model.MovieUIModel
 
 @Composable
@@ -27,24 +26,25 @@ fun MovieListScreen(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val listState = rememberLazyGridState()
-    if (uiState.isLoading) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator()
-        }
-    }
+    val brush = rememberShimmerBrush()
+
     LazyVerticalGrid(
         modifier = Modifier.fillMaxSize(),
         state = listState,
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         items(
             items = uiState.movies,
             key = { it.id }
         ) { movie ->
-            MovieItemContent(movie = movie, onMovieDetail = onMovieDetail)
+            if (uiState.isLoading) {
+                ShimmerMovieItemPlaceholder(brush = brush)
+            } else {
+                MovieItemContent(movie = movie, onMovieDetail = onMovieDetail)
+            }
         }
     }
 }
