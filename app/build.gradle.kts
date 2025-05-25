@@ -99,5 +99,7 @@ dependencies {
     // implementation(libs.androidx.material3.navigation3)
     //implementation(libs.androidx.adaptive.layout)
 
+    // coil
+    implementation(libs.coil.compose)
 
 }

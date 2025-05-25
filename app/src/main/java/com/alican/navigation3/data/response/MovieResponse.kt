@@ -7,44 +7,44 @@ import kotlinx.serialization.Serializable
 data class MovieResponse(
 
     @SerialName("overview")
-    val overview: String? = null,
+    val overview: String,
 
     @SerialName("original_language")
-    val original_language: String? = null,
+    val original_language: String,
 
     @SerialName("original_title")
-    val original_title: String? = null,
+    val original_title: String,
 
     @SerialName("video")
-    val video: Boolean? = null,
+    val video: Boolean,
 
     @SerialName("title")
-    val title: String? = null,
+    val title: String,
 
     @SerialName("genre_ids")
-    val genre_ids: List<Int>? = null,
+    val genre_ids: List<Int>,
 
     @SerialName("poster_path")
-    val poster_path: String? = null,
+    val poster_path: String,
 
     @SerialName("backdrop_path")
-    val backdrop_path: String? = null,
+    val backdrop_path: String,
 
     @SerialName("release_date")
-    val release_date: String? = null,
+    val release_date: String,
 
     @SerialName("popularity")
-    val popularity: Double? = null,
+    val popularity: Double,
 
     @SerialName("vote_average")
-    val vote_average: Double? = null,
+    val vote_average: Double,
 
     @SerialName("id")
-    val id: Int? = null,
+    val id: Int,
 
     @SerialName("adult")
-    val adult: Boolean? = null,
+    val adult: Boolean,
 
     @SerialName("vote_count")
-    val vote_count: Int? = null
+    val vote_count: Int
 )

@@ -3,6 +3,8 @@ package com.alican.navigation3.di
 import com.alican.navigation3.BuildConfig
 import com.alican.navigation3.data.service.MovieService
 import com.alican.navigation3.data.service.MovieServiceImpl
+import com.alican.navigation3.domain.interactor.MovieInteractor
+import com.alican.navigation3.domain.interactor.MovieInteractorImpl
 import com.alican.navigation3.scenes.home.HomeViewModel
 import com.alican.navigation3.scenes.movie.list.MovieListViewModel
 import io.ktor.client.HttpClient
@@ -25,8 +27,12 @@ val koinModules = module {
     viewModelOf(::HomeViewModel)
     viewModelOf(::MovieListViewModel)
 
-    // services
+    // interactors
 
+    singleOf(::MovieInteractorImpl) bind MovieInteractor::class
+
+
+    // services
     singleOf(::MovieServiceImpl) bind MovieService::class
 }
 
