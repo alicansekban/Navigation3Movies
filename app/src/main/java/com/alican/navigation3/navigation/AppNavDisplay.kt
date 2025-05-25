@@ -1,5 +1,10 @@
+@file:OptIn(ExperimentalMaterial3AdaptiveApi::class)
+
 package com.alican.navigation3.navigation
 
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
+import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -24,10 +29,11 @@ fun AppNavDisplay(
     modifier: Modifier = Modifier,
     backStack: NavBackStack
 ) {
-
+    val listDetailStrategy = rememberListDetailSceneStrategy<Any>()
     NavDisplay(
         modifier = modifier,
         backStack = backStack,
+        sceneStrategy = listDetailStrategy,
         entryDecorators = listOf(
             rememberSceneSetupNavEntryDecorator(),
             rememberSavedStateNavEntryDecorator(),
@@ -35,7 +41,9 @@ fun AppNavDisplay(
         ),
         onBack = { backStack.removeLastOrNull() },
         entryProvider = entryProvider {
-            entry<Scenes.Home> {
+            entry<Scenes.Home>(
+                metadata = ListDetailSceneStrategy.extraPane()
+            ) {
                 HomeScene(
                     onMovieList = { movieType ->
                         val route = Scenes.MovieList(movieType)
@@ -48,10 +56,11 @@ fun AppNavDisplay(
                 )
             }
 
-            entry<Scenes.MovieList> { entry ->
+            entry<Scenes.MovieList>(
+                metadata = ListDetailSceneStrategy.listPane()
+            ) { entry ->
                 val movieType = entry.movieType
                 val viewModel: MovieListViewModel = koinViewModel(
-                    key = entry.movieType.name,
                     parameters = { parametersOf(movieType) }
                 )
 
@@ -67,10 +76,11 @@ fun AppNavDisplay(
                 )
             }
 
-            entry<Scenes.MovieDetail> { entry ->
+            entry<Scenes.MovieDetail>(
+                metadata = ListDetailSceneStrategy.detailPane()
+            ) { entry ->
                 val movieId = entry.movie
                 val viewModel: MovieDetailViewModel = koinViewModel(
-                    key = entry.movie.id.toString(),
                     parameters = { parametersOf(movieId) }
                 )
                 MovieDetailScene(
