@@ -1,6 +1,7 @@
 package com.alican.navigation3.extension
 
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 
 
@@ -16,6 +17,18 @@ fun <T : Any> SnapshotStateList<Any>.addRouteSafely(route: T) {
 }
 
 fun SnapshotStateList<Any>.removeRouteSafely() {
+    if (this.isNotEmpty()) {
+        this.removeLastOrNull()
+    }
+}
+
+fun <T : NavKey> NavBackStack<T>.addRouteSafely(route: T) {
+    if (!this.contains(route)) {
+        this.add(route)
+    }
+}
+
+fun NavBackStack<*>.removeRouteSafely() {
     if (this.isNotEmpty()) {
         this.removeLastOrNull()
     }
