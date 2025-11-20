@@ -20,6 +20,7 @@ navigation3 = "1.0.0"
 nav3Lifecycle = "2.10.0"
 kotlinxSerializationCore = "1.9.0"
 nav3Material = "1.0.0-SNAPSHOT"
+materialIcons = "1.7.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -59,6 +60,8 @@ androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecy
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
 
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+
+material-icons = { module = "androidx.compose.material:material-icons-core", version.ref = "materialIcons" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

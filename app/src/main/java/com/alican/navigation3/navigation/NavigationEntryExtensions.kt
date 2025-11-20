@@ -4,9 +4,7 @@ package com.alican.navigation3.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation3.runtime.EntryProviderScope
-import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
-import com.alican.navigation3.extension.addRouteSafely
 import com.alican.navigation3.scenes.home.HomeScene
 import com.alican.navigation3.scenes.movie.detail.MovieDetailScene
 import com.alican.navigation3.scenes.movie.detail.MovieDetailViewModel
@@ -17,27 +15,38 @@ import org.koin.core.parameter.parametersOf
 
 
 @Composable
-fun EntryProviderScope<NavKey>.MovieDetailEntry(
-    backStack: NavBackStack<NavKey>
+fun EntryProviderScope<NavKey>.ProfileEntry(
+    navigator: Navigator
 ) {
-    entry<EntryRoutes.MovieDetail> { entry ->
-        val movieId = entry.movie
-        val viewModel: MovieDetailViewModel = koinViewModel(
-            parameters = { parametersOf(movieId) }
-        )
-        MovieDetailScene(
-            viewModel = viewModel,
-            onBack = {
-                backStack.removeLastOrNull()
-            }
-        )
+    entry<BottomNavRoutes.Profile> {
     }
 }
 
 @Composable
-fun EntryProviderScope<NavKey>.MovieListEntry(
-    backStack: NavBackStack<NavKey>
+fun EntryProviderScope<NavKey>.FavoritesEntry(
+    navigator: Navigator,
 ) {
+    entry<BottomNavRoutes.Favorites> {
+
+    }
+}
+
+@Composable
+fun EntryProviderScope<NavKey>.HomeEntry(
+    navigator: Navigator
+) {
+    entry<BottomNavRoutes.Home> {
+        HomeScene(
+            onMovieList = { movieType ->
+                val route = EntryRoutes.MovieList(movieType)
+                navigator.navigate(route)
+            },
+            onMovieDetail = { movieId ->
+                val route = EntryRoutes.MovieDetail(movieId)
+                navigator.navigate(route)
+            }
+        )
+    }
     entry<EntryRoutes.MovieList> { entry ->
         val movieType = entry.movieType
         val viewModel: MovieListViewModel = koinViewModel(
@@ -46,30 +55,24 @@ fun EntryProviderScope<NavKey>.MovieListEntry(
 
         MovieListScreen(
             onBack = {
-                backStack.removeLastOrNull()
+                navigator.goBack()
             },
             viewModel = viewModel,
             onMovieDetail = { movie ->
                 val route = EntryRoutes.MovieDetail(movie = movie)
-                backStack.addRouteSafely(route)
+                navigator.navigate(route)
             }
         )
     }
-}
-
-@Composable
-fun EntryProviderScope<NavKey>.HomeEntry(
-    backStack: NavBackStack<NavKey>
-) {
-    entry<EntryRoutes.Home> {
-        HomeScene(
-            onMovieList = { movieType ->
-                val route = EntryRoutes.MovieList(movieType)
-                backStack.addRouteSafely(route)
-            },
-            onMovieDetail = { movieId ->
-                val route = EntryRoutes.MovieDetail(movieId)
-                backStack.addRouteSafely(route)
+    entry<EntryRoutes.MovieDetail> { entry ->
+        val movieId = entry.movie
+        val viewModel: MovieDetailViewModel = koinViewModel(
+            parameters = { parametersOf(movieId) }
+        )
+        MovieDetailScene(
+            viewModel = viewModel,
+            onBack = {
+                navigator.goBack()
             }
         )
     }

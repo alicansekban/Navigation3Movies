@@ -27,11 +27,7 @@ fun AppNavDisplay(
             rememberViewModelStoreNavEntryDecorator()
         ),
         entryProvider = entryProvider {
-            HomeEntry(backStack)
 
-            MovieListEntry(backStack)
-
-            MovieDetailEntry(backStack)
         }
     )
 }
