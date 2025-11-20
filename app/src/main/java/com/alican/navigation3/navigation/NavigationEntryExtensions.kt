@@ -1,3 +1,5 @@
+@file:JvmName("NavigationEntriesKt")
+
 package com.alican.navigation3.navigation
 
 import androidx.compose.runtime.Composable
@@ -18,7 +20,7 @@ import org.koin.core.parameter.parametersOf
 fun EntryProviderScope<NavKey>.MovieDetailEntry(
     backStack: NavBackStack<NavKey>
 ) {
-    entry<Scenes.MovieDetail> { entry ->
+    entry<EntryRoutes.MovieDetail> { entry ->
         val movieId = entry.movie
         val viewModel: MovieDetailViewModel = koinViewModel(
             parameters = { parametersOf(movieId) }
@@ -36,7 +38,7 @@ fun EntryProviderScope<NavKey>.MovieDetailEntry(
 fun EntryProviderScope<NavKey>.MovieListEntry(
     backStack: NavBackStack<NavKey>
 ) {
-    entry<Scenes.MovieList> { entry ->
+    entry<EntryRoutes.MovieList> { entry ->
         val movieType = entry.movieType
         val viewModel: MovieListViewModel = koinViewModel(
             parameters = { parametersOf(movieType) }
@@ -48,7 +50,7 @@ fun EntryProviderScope<NavKey>.MovieListEntry(
             },
             viewModel = viewModel,
             onMovieDetail = { movie ->
-                val route = Scenes.MovieDetail(movie = movie)
+                val route = EntryRoutes.MovieDetail(movie = movie)
                 backStack.addRouteSafely(route)
             }
         )
@@ -59,14 +61,14 @@ fun EntryProviderScope<NavKey>.MovieListEntry(
 fun EntryProviderScope<NavKey>.HomeEntry(
     backStack: NavBackStack<NavKey>
 ) {
-    entry<Scenes.Home> {
+    entry<EntryRoutes.Home> {
         HomeScene(
             onMovieList = { movieType ->
-                val route = Scenes.MovieList(movieType)
+                val route = EntryRoutes.MovieList(movieType)
                 backStack.addRouteSafely(route)
             },
             onMovieDetail = { movieId ->
-                val route = Scenes.MovieDetail(movieId)
+                val route = EntryRoutes.MovieDetail(movieId)
                 backStack.addRouteSafely(route)
             }
         )

@@ -10,7 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.rememberNavBackStack
 import com.alican.navigation3.navigation.AppNavDisplay
-import com.alican.navigation3.navigation.Scenes
+import com.alican.navigation3.navigation.EntryRoutes
 import com.alican.navigation3.ui.theme.Navigation3TutorialTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
 
-            val backStack = rememberNavBackStack(Scenes.Home)
+            val backStack = rememberNavBackStack(EntryRoutes.Home)
 
             Navigation3TutorialTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->

@@ -4,16 +4,17 @@ import androidx.navigation3.runtime.NavKey
 import com.alican.navigation3.domain.ui_model.MovieUIModel
 import kotlinx.serialization.Serializable
 
-sealed class Scenes : NavKey {
+sealed class EntryRoutes : NavKey {
     @Serializable
-    data object Home : Scenes()
+    data object Home : EntryRoutes()
 
     @Serializable
-    data class MovieList(val movieType: MovieType) : Scenes()
+    data class MovieList(val movieType: MovieType) : EntryRoutes()
 
     @Serializable
-    data class MovieDetail(val movie: MovieUIModel) : Scenes()
+    data class MovieDetail(val movie: MovieUIModel) : EntryRoutes()
 }
+
 
 enum class MovieType {
     POPULAR,
