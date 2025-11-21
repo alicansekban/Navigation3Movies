@@ -25,5 +25,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Navigation3Tutorial"
+rootProject.name = "Navigation3Movies"
 include(":app")
